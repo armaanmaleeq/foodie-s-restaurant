@@ -1,0 +1,686 @@
+/* ==========================================
+   1. Global Variables & Soft Dimmed Background
+   ========================================== */
+:root {
+    --primary: #e05656;
+    --primary-dark: #c0392b;
+    --accent-tint: rgba(220, 86, 86, 0.12);
+    --glass-bg: rgba(235, 228, 228, 0.65);
+    --glass-bg-hover: rgba(245, 238, 238, 0.85);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.45);
+    --glass-shadow: 0 8px 28px 0 rgba(160, 70, 70, 0.12);
+    --text-main: #232729;
+    --text-muted: #576063;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Dimmed, low-glare ambient background for eye comfort */
+body {
+    line-height: 1.6;
+    color: var(--text-main);
+    background: linear-gradient(135deg, #dfd8d8 0%, #e3d3d3 50%, #ded7d2 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   2. Reusable Visual Anchors & Titles
+   ========================================== */
+.section-title {
+    text-align: center;
+    font-size: 2.1rem;
+    margin-bottom: 2rem;
+    color: var(--text-main);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #e05656, #e67e22);
+    margin: 0.5rem auto 0;
+    border-radius: 4px;
+}
+
+.btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary), #e87373);
+    color: #fff;
+    padding: 0.75rem 1.6rem;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(220, 86, 86, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(220, 86, 86, 0.4);
+}
+
+.image-raised {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16), 0 8px 16px rgba(220, 86, 86, 0.1);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.image-raised img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.image-raised:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22), 0 12px 20px rgba(220, 86, 86, 0.2);
+}
+
+.image-raised:hover img {
+    transform: scale(1.04);
+}
+
+/* ==========================================
+   3. Floating Glass Navbar (Scaled Down)
+   ========================================== */
+.header {
+    position: sticky;
+    top: 12px;
+    z-index: 1000;
+    width: 82%;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0.7rem 1.8rem;
+    border-radius: 50px;
+    background: rgba(230, 222, 222, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(220, 86, 86, 0.2);
+    box-shadow: 0 8px 24px rgba(160, 70, 70, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.04);
+}
+
+.navbar {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: var(--primary);
+    transform: scale(1.12);
+}
+
+/* ==========================================
+   4. Sections Layout (More Breathing Room)
+   ========================================== */
+
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3.5rem 6%;
+    min-height: 75vh;
+    gap: 2.5rem;
+    margin: 1.5rem auto;
+    width: 84%;
+    max-width: 1080px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(238, 228, 228, 0.7), rgba(235, 215, 215, 0.45));
+    backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    animation: fadeIn 0.8s ease-out;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-content h1 {
+    font-size: 2.7rem;
+    line-height: 1.18;
+    margin-bottom: 1rem;
+    color: #1e2325;
+}
+
+.hero-content p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.hero-image {
+    flex: 1;
+    max-height: 360px;
+}
+
+/* About Section */
+.about {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 6%;
+    gap: 3rem;
+    margin: 2.5rem auto;
+    width: 84%;
+    max-width: 1080px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(238, 230, 222, 0.7), rgba(235, 225, 225, 0.55));
+    backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.about-image {
+    flex: 1;
+    max-height: 340px;
+}
+
+.about-content {
+    flex: 1;
+}
+
+.about-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #1e2325;
+}
+
+.about-content p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* Menu Section */
+.menu {
+    padding: 4rem 6%;
+    margin: 2.5rem auto;
+    width: 84%;
+    max-width: 1080px;
+    border-radius: 24px;
+    background: rgba(230, 222, 222, 0.45);
+    backdrop-filter: blur(10px);
+    border: var(--glass-border);
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+}
+
+.menu-card {
+    background: rgba(242, 235, 235, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-img-wrapper {
+    overflow: hidden;
+    height: 190px;
+}
+
+.menu-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.menu-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(220, 86, 86, 0.2);
+    background: rgba(248, 242, 242, 0.95);
+}
+
+.menu-card:hover img {
+    transform: scale(1.06);
+}
+
+.menu-card-content {
+    padding: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.menu-card-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+}
+
+.menu-card-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.menu-card-content span {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Gallery Section */
+.gallery {
+    padding: 4rem 6%;
+    margin: 2.5rem auto;
+    width: 84%;
+    max-width: 1080px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(235, 218, 218, 0.45), rgba(238, 225, 225, 0.65));
+    backdrop-filter: blur(12px);
+    border: var(--glass-border);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+}
+
+.gallery-item {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    height: 210px;
+    position: relative;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+    filter: brightness(1.03);
+}
+
+/* Customer Reviews Section */
+.reviews {
+    padding: 4rem 6%;
+    margin: 2.5rem auto;
+    width: 84%;
+    max-width: 1080px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(238, 230, 230, 0.5), rgba(235, 215, 215, 0.4));
+    backdrop-filter: blur(12px);
+    border: var(--glass-border);
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding-top: 1.8rem;
+}
+
+.review-card {
+    background: rgba(242, 235, 235, 0.65);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(160, 70, 70, 0.08);
+    border-top: 4px solid var(--primary);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+}
+
+.review-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    background: rgba(248, 242, 242, 0.9);
+    box-shadow: 0 16px 32px rgba(160, 70, 70, 0.16);
+}
+
+.avatar-wrapper {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #dfd8d8;
+    box-shadow: 0 5px 12px rgba(220, 86, 86, 0.25);
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.review-card h3 {
+    margin-top: 0.8rem;
+    font-size: 1.1rem;
+    color: #232729;
+}
+
+.stars {
+    color: #e67e22;
+    font-size: 1rem;
+    margin: 0.2rem 0 0.6rem 0;
+}
+
+.review-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.45;
+}
+
+/* Contact Section */
+.contact {
+    padding: 4rem 6%;
+    margin: 2.5rem auto;
+    width: 84%;
+    max-width: 1080px;
+}
+
+.glass-card {
+    background: rgba(238, 230, 230, 0.65);
+    backdrop-filter: blur(16px);
+    border-radius: 24px;
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: 3rem;
+}
+
+.contact-container {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 250px;
+}
+
+.contact-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #1e2325;
+}
+
+.contact-info p {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.contact-form {
+    flex: 1.4;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(220, 86, 86, 0.25);
+    background: rgba(245, 238, 238, 0.75);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    background: #eef2f3;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(220, 86, 86, 0.2);
+    transform: translateY(-1px);
+}
+
+.contact-form .btn {
+    align-self: flex-start;
+    margin-top: 0.4rem;
+}
+
+/* ==========================================
+   9. Compact Glass Footer
+   ========================================== */
+.footer {
+    background: linear-gradient(135deg, rgba(28, 32, 34, 0.94), rgba(18, 22, 24, 0.96));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #d0d5d7;
+    margin-top: 2.5rem;
+    padding: 2rem 6% 1rem 6%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.footer-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 0.98rem;
+    margin-bottom: 0.6rem;
+    position: relative;
+    font-weight: 700;
+}
+
+.footer-col h4::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--primary);
+    margin-top: 0.3rem;
+    border-radius: 2px;
+}
+
+.footer-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.5px;
+}
+
+.footer-desc {
+    font-size: 0.82rem;
+    color: #9aa4a7;
+    line-height: 1.45;
+}
+
+.footer-col p {
+    font-size: 0.82rem;
+    color: #9aa4a7;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}
+
+.footer-col p span {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: #9aa4a7;
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.footer-bottom {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    font-size: 0.8rem;
+    color: #7b8588;
+}
+
+/* Footer Responsive Tweaks */
+@media (max-width: 600px) {
+    .footer {
+        padding: 1.5rem 5% 0.8rem 5%;
+    }
+
+    .footer-container {
+        gap: 1.2rem;
+    }
+}
+
+/* ==========================================
+   5. Responsive Design Adjustments
+   ========================================== */
+@media (max-width: 992px) {
+    .header, .hero, .about, .menu, .gallery, .reviews, .contact {
+        width: 90%;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 2.8rem 5%;
+    }
+
+    .about {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 2.8rem 5%;
+    }
+
+    .glass-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .contact-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        width: 92%;
+        flex-direction: column;
+        gap: 0.7rem;
+        padding: 0.8rem 1.2rem;
+        border-radius: 20px;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.1rem;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+}
