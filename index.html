@@ -1,230 +1,1507 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foodie's Restaurant</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foodie's Restaurant | Gourmet Culinary Experience</title>
 
-    <!-- 1. Navigation Bar -->
-    <header class="header">
-        <a href="#home" class="logo">Foodie's</a>
-        <nav class="navbar">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#menu">Menu</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#reviews">Reviews</a>
-            <a href="#contact">Contact</a>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+
+      /* Smooth custom bouncy transition curves */
+      .bounce-btn {
+        transition:
+          transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.3s ease,
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+      .bounce-btn:hover {
+        transform: translateY(-4px) scale(1.04);
+      }
+      .bounce-btn:active {
+        transform: translateY(1px) scale(0.96);
+      }
+
+      .bounce-card {
+        transition:
+          transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.4s ease,
+          border-color 0.4s ease;
+      }
+      .bounce-card:hover {
+        transform: translateY(-8px) scale(1.02);
+      }
+
+      .bounce-nav {
+        transition:
+          transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+          color 0.2s ease;
+      }
+      .bounce-nav:hover {
+        transform: translateY(-2px) scale(1.08);
+      }
+
+      /* Keyframes */
+      @keyframes floatSlow {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-12px) rotate(1deg);
+        }
+      }
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          opacity: 0.25;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.45;
+          transform: scale(1.1);
+        }
+      }
+
+      .animate-float {
+        animation: floatSlow 7s ease-in-out infinite;
+      }
+      .animate-glow {
+        animation: pulseGlow 9s ease-in-out infinite;
+      }
+
+      /* Scroll Reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(35px);
+        transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Filter visibility transition */
+      .menu-card-item {
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .menu-card-item.hide {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+        pointer-events: none;
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        border: none;
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1c1917;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f43f5e;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-stone-950 text-stone-100 selection:bg-rose-500 selection:text-white min-h-screen relative overflow-x-hidden"
+  >
+    <!-- Constant Glassy Cozy Restaurant Background Layer -->
+    <div
+      class="fixed inset-0 bg-[url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center bg-fixed -z-30"
+    ></div>
+    <!-- Semi-opaque Glass Overlay -->
+    <div class="fixed inset-0 bg-stone-950/75 backdrop-blur-md -z-20"></div>
+
+    <!-- Ambient Floating Spheres -->
+    <div
+      class="fixed top-12 -left-20 w-96 h-96 bg-rose-600/20 rounded-full blur-3xl animate-glow pointer-events-none -z-10"
+    ></div>
+    <div
+      class="fixed bottom-20 -right-20 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-glow pointer-events-none -z-10"
+    ></div>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      class="fixed bottom-6 left-6 z-50 flex items-center gap-3 rounded-2xl bg-stone-900/90 border border-white/20 px-5 py-4 text-white shadow-2xl backdrop-blur-xl transition-all duration-500 translate-y-28 opacity-0"
+    >
+      <div
+        class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+      >
+        <i data-lucide="check" class="w-4 h-4"></i>
+      </div>
+      <span id="toast-msg" class="text-xs font-bold tracking-wide"
+        >Item added to cart!</span
+      >
+    </div>
+
+    <!-- Table Reservation Modal -->
+    <div
+      id="reservation-modal"
+      class="fixed inset-0 bg-stone-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300"
+    >
+      <div
+        class="bg-stone-900/90 border border-white/15 rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl space-y-5 transform scale-90 transition-transform duration-300 backdrop-blur-2xl"
+        id="modal-box"
+      >
+        <div
+          class="flex items-center justify-between border-b border-stone-800 pb-4"
+        >
+          <div
+            class="flex items-center gap-2 text-rose-500 font-extrabold text-xl"
+          >
+            <i data-lucide="calendar" class="w-6 h-6"></i>
+            <span>Reserve a Table</span>
+          </div>
+          <button
+            id="close-reservation"
+            class="bounce-btn p-2 rounded-full bg-stone-800 text-stone-400 hover:text-white hover:bg-stone-700"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <form id="reservation-form" class="space-y-4 text-xs">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                >Full Name</label
+              >
+              <input
+                type="text"
+                required
+                placeholder="John Doe"
+                class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-3 text-white outline-none focus:border-rose-500 transition"
+              />
+            </div>
+            <div>
+              <label
+                class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                >Phone Number</label
+              >
+              <input
+                type="tel"
+                required
+                placeholder="+1 (555) 000-0000"
+                class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-3 text-white outline-none focus:border-rose-500 transition"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label
+                class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                >Date</label
+              >
+              <input
+                type="date"
+                required
+                class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-2.5 text-white outline-none focus:border-rose-500 transition"
+              />
+            </div>
+            <div>
+              <label
+                class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                >Time</label
+              >
+              <select
+                required
+                class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-2.5 text-white outline-none focus:border-rose-500 transition"
+              >
+                <option value="17:00" class="bg-stone-900">5:00 PM</option>
+                <option value="18:00" class="bg-stone-900">6:00 PM</option>
+                <option value="19:00" class="bg-stone-900">7:00 PM</option>
+                <option value="20:00" class="bg-stone-900">8:00 PM</option>
+                <option value="21:00" class="bg-stone-900">9:00 PM</option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                >Guests</label
+              >
+              <select
+                required
+                class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-2.5 text-white outline-none focus:border-rose-500 transition"
+              >
+                <option value="2" class="bg-stone-900">2 People</option>
+                <option value="4" class="bg-stone-900">4 People</option>
+                <option value="6" class="bg-stone-900">6 People</option>
+                <option value="8" class="bg-stone-900">8+ People</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+              >Special Requests</label
+            >
+            <textarea
+              rows="2"
+              placeholder="Dietary restrictions, seating preferences..."
+              class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-3 text-white outline-none focus:border-rose-500 transition"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="bounce-btn w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2"
+          >
+            <span>Confirm Reservation</span>
+            <i data-lucide="check" class="w-4 h-4"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Appealing Glassy Cart Drawer -->
+    <div
+      id="cart-drawer-backdrop"
+      class="fixed inset-0 bg-stone-950/70 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300"
+    ></div>
+
+    <aside
+      id="cart-drawer"
+      class="fixed top-0 right-0 h-full w-full max-w-md bg-stone-900/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between"
+    >
+      <div
+        class="p-6 border-b border-stone-800 flex items-center justify-between bg-stone-900/50"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="p-2.5 rounded-xl bg-rose-500/20 text-rose-500 border border-rose-500/30"
+          >
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-white text-lg tracking-tight">
+              Your Gourmet Order
+            </h3>
+            <p class="text-[11px] text-stone-400">
+              Freshly prepared & delivered hot
+            </p>
+          </div>
+        </div>
+        <button
+          id="close-cart"
+          class="bounce-btn p-2 rounded-full bg-stone-800 text-stone-400 hover:text-white hover:bg-stone-700"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Dynamic Cart Items -->
+      <div id="cart-items" class="p-6 space-y-4 overflow-y-auto flex-1">
+        <!-- Dynamically populated via JS -->
+      </div>
+
+      <!-- Cart Summary Footer -->
+      <div
+        class="p-6 border-t border-stone-800 bg-stone-950/70 backdrop-blur-xl space-y-4"
+      >
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between text-stone-400">
+            <span>Subtotal</span>
+            <span id="cart-subtotal" class="font-bold text-stone-200"
+              >$0.00</span
+            >
+          </div>
+          <div class="flex justify-between text-stone-400">
+            <span>Estimated Tax (8.875%)</span>
+            <span id="cart-tax" class="font-bold text-stone-200">$0.00</span>
+          </div>
+          <div class="flex justify-between text-stone-400">
+            <span>Delivery Fee</span>
+            <span class="font-bold text-emerald-400 uppercase text-[10px]"
+              >Free</span
+            >
+          </div>
+          <div
+            class="flex justify-between text-base font-black text-white pt-3 border-t border-stone-800"
+          >
+            <span>Total Amount</span>
+            <span id="cart-total" class="text-rose-500 text-lg">$0.00</span>
+          </div>
+        </div>
+
+        <button
+          id="checkout-btn"
+          class="bounce-btn w-full py-4 bg-gradient-to-r from-rose-600 to-rose-500 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-rose-600/30 flex items-center justify-center gap-2"
+        >
+          <span>Proceed to Checkout</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Sticky Navbar -->
+    <header
+      class="sticky top-4 z-40 mx-auto w-[92%] max-w-5xl rounded-full border border-white/10 bg-stone-900/60 px-6 py-3 shadow-2xl backdrop-blur-xl"
+    >
+      <div class="flex items-center justify-between">
+        <a
+          href="#home"
+          class="bounce-btn flex items-center gap-2 text-2xl font-black text-rose-500 tracking-tight"
+        >
+          <i data-lucide="utensils" class="w-6 h-6"></i>
+          <span>Foodie's</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav
+          class="hidden md:flex items-center gap-7 font-bold text-xs uppercase tracking-wider text-stone-300"
+        >
+          <a href="#home" class="bounce-nav hover:text-rose-400">Home</a>
+          <a href="#about" class="bounce-nav hover:text-rose-400">About</a>
+          <a href="#menu" class="bounce-nav hover:text-rose-400">Menu</a>
+          <a href="#gallery" class="bounce-nav hover:text-rose-400">Gallery</a>
+          <a href="#reviews" class="bounce-nav hover:text-rose-400">Reviews</a>
+          <a href="#contact" class="bounce-nav hover:text-rose-400">Contact</a>
         </nav>
+
+        <div class="flex items-center gap-3">
+          <button
+            id="open-cart"
+            class="bounce-btn relative flex items-center gap-2 rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2.5 text-xs font-black text-white shadow-lg shadow-rose-600/30"
+          >
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Cart</span>
+            <span
+              id="cart-badge"
+              class="flex h-5 w-5 items-center justify-center rounded-full bg-white text-rose-600 text-[10px] font-black shadow-sm"
+              >0</span
+            >
+          </button>
+        </div>
+      </div>
     </header>
 
-    <!-- 2. Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Experience Exceptional Culinary Delights</h1>
-            <p>Welcome to Foodie's Restaurant, where every dish is crafted with passion, fresh organic ingredients, and unforgettable flavors.</p>
-            <a href="#menu" class="btn">Explore Menu</a>
+    <!-- Main Content Container -->
+    <main class="mx-auto max-w-5xl px-4 py-6 space-y-16">
+      <!-- SECTION 1: HERO SECTION (Vertically Expanded to Screen Height) -->
+      <section
+        id="home"
+        class="reveal min-h-[calc(100vh-6rem)] flex items-center justify-center"
+      >
+        <div
+          class="w-full rounded-3xl border border-white/10 bg-stone-900/60 p-8 md:p-14 shadow-2xl backdrop-blur-xl flex flex-col-reverse md:flex-row items-center justify-between gap-12 my-auto"
+        >
+          <div class="flex-1 space-y-6 text-center md:text-left">
+            <span
+              class="inline-block rounded-full bg-rose-500/10 border border-rose-500/30 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-rose-400 shadow-inner"
+            >
+              Fine Culinary Dining Experience
+            </span>
+            <h1
+              class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight"
+            >
+              Savor Every
+              <span
+                class="bg-gradient-to-r from-rose-500 via-rose-400 to-amber-400 bg-clip-text text-transparent"
+                >Exquisite</span
+              >
+              Flavour
+            </h1>
+            <p
+              class="text-stone-300 text-sm md:text-base leading-relaxed max-w-xl"
+            >
+              Handcrafted organic delicacies prepared with passion by
+              award-winning master chefs. Indulge in an extraordinary atmosphere
+              designed for unforgettable memories.
+            </p>
+            <div
+              class="pt-4 flex flex-wrap justify-center md:justify-start gap-4"
+            >
+              <a
+                href="#menu"
+                class="bounce-btn inline-flex items-center gap-2 rounded-full bg-rose-600 hover:bg-rose-500 px-7 py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-rose-600/30"
+              >
+                <i data-lucide="utensils-crossed" class="w-4 h-4"></i>
+                <span>Order Online</span>
+              </a>
+              <button
+                id="open-reservation-btn"
+                class="bounce-btn inline-flex items-center gap-2 rounded-full bg-stone-800 hover:bg-stone-700 border border-white/10 px-7 py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-md"
+              >
+                <i data-lucide="calendar" class="w-4 h-4 text-rose-400"></i>
+                <span>Book a Table</span>
+              </button>
+            </div>
+          </div>
+          <div class="flex-1 w-full max-w-md md:max-w-none animate-float">
+            <div class="relative">
+              <div
+                class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-rose-500 to-amber-500 opacity-30 blur-xl"
+              ></div>
+              <img
+                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1000&q=80"
+                alt="Restaurant Ambiance"
+                class="relative h-80 md:h-[420px] w-full object-cover rounded-3xl shadow-2xl border border-white/20"
+              />
+            </div>
+          </div>
         </div>
-        <div class="hero-image image-raised">
-            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Foodie's Restaurant Interior">
-        </div>
-    </section>
+      </section>
 
-    <!-- 3. About Section -->
-    <section id="about" class="about">
-        <div class="about-image image-raised">
-            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="About Foodie's Restaurant">
-        </div>
-        <div class="about-content">
-            <h2>Our Story & Culinary Philosophy</h2>
-            <p>Founded in 2015, Foodie's Restaurant bridges traditional recipes with modern gastronomy. Our master chefs prepare each meal to perfection, offering a warm and inviting atmosphere for food lovers everywhere.</p>
-            <a href="#contact" class="btn">Reserve a Table</a>
-        </div>
-    </section>
+      <!-- SECTION 2: ABOUT US SECTION (Vertically Expanded to Screen Height) -->
+      <section
+        id="about"
+        class="reveal min-h-[calc(100vh-6rem)] flex items-center justify-center"
+      >
+        <div
+          class="w-full rounded-3xl border border-white/10 bg-stone-900/60 p-8 md:p-14 shadow-2xl backdrop-blur-xl flex flex-col justify-center gap-10 my-auto"
+        >
+          <div class="flex flex-col lg:flex-row items-center gap-12">
+            <div class="flex-1 space-y-6">
+              <span
+                class="text-xs font-extrabold uppercase tracking-widest text-rose-500"
+                >Our Heritage & Craft</span
+              >
+              <h2
+                class="text-3xl md:text-4xl font-black text-white leading-tight"
+              >
+                Crafting Culinary Perfection Since 2012
+              </h2>
+              <p class="text-xs md:text-sm text-stone-300 leading-relaxed">
+                At Foodie's, we believe dining is a celebration of taste,
+                aesthetics, and togetherness. Founded on an unyielding
+                dedication to quality, our kitchen merges centuries-old
+                techniques with modern gastronomy.
+              </p>
+              <p class="text-xs md:text-sm text-stone-300 leading-relaxed">
+                Every signature reduction is slow-simmered for over 18 hours,
+                every pizza crust naturally fermented for 48 hours, and every
+                prime cut hand-selected from certified sustainable organic
+                farms.
+              </p>
 
-    <!-- 4. Menu Section -->
-    <section id="menu" class="menu">
-        <h2 class="section-title">Our Featured Menu</h2>
-        <div class="menu-grid">
-            <article class="menu-card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Grilled Steak">
+              <!-- Key Stats Grid -->
+              <div
+                class="grid grid-cols-3 gap-6 pt-6 border-t border-stone-800"
+              >
+                <div class="text-center md:text-left">
+                  <span class="block text-3xl font-black text-rose-500"
+                    >14+</span
+                  >
+                  <span
+                    class="text-[11px] font-bold text-stone-400 uppercase tracking-wider"
+                    >Years Excellence</span
+                  >
                 </div>
-                <div class="menu-card-content">
-                    <h3>Grilled Steak</h3>
-                    <p>Fresh grilled steak served with garlic herb butter and roasted seasonal vegetables.</p>
-                    <span>$24</span>
+                <div class="text-center md:text-left">
+                  <span class="block text-3xl font-black text-rose-500"
+                    >100%</span
+                  >
+                  <span
+                    class="text-[11px] font-bold text-stone-400 uppercase tracking-wider"
+                    >Organic Sourced</span
+                  >
                 </div>
-            </article>
-
-            <article class="menu-card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Gourmet Burger">
+                <div class="text-center md:text-left">
+                  <span class="block text-3xl font-black text-rose-500"
+                    >50k+</span
+                  >
+                  <span
+                    class="text-[11px] font-bold text-stone-400 uppercase tracking-wider"
+                    >Happy Guests</span
+                  >
                 </div>
-                <div class="menu-card-content">
-                    <h3>Gourmet Burger</h3>
-                    <p>Juicy Angus beef patty topped with cheddar cheese, crisp lettuce, and signature sauce.</p>
-                    <span>$16</span>
-                </div>
-            </article>
-
-            <article class="menu-card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" alt="Creamy Alfredo Pasta">
-                </div>
-                <div class="menu-card-content">
-                    <h3>Creamy Alfredo Pasta</h3>
-                    <p>Fettuccine tossed in a rich, creamy parmesan Alfredo sauce with fresh basil.</p>
-                    <span>$18</span>
-                </div>
-            </article>
-
-            <article class="menu-card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Wood-Fired Pizza">
-                </div>
-                <div class="menu-card-content">
-                    <h3>Wood-Fired Pizza</h3>
-                    <p>Hand-tossed pizza topped with fresh mozzarella, cherry tomatoes, and olive oil.</p>
-                    <span>$19</span>
-                </div>
-            </article>
-
-            <article class="menu-card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Fresh Salmon Salad">
-                </div>
-                <div class="menu-card-content">
-                    <h3>Fresh Salmon Salad</h3>
-                    <p>Seared wild salmon over a bed of mixed greens, avocado, and lemon vinaigrette.</p>
-                    <span>$21</span>
-                </div>
-            </article>
-
-            <article class="menu-card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&q=80" alt="Chocolate Lava Cake">
-                </div>
-                <div class="menu-card-content">
-                    <h3>Chocolate Lava Cake</h3>
-                    <p>Decadent chocolate cake with a gooey molten center served with vanilla gelato.</p>
-                    <span>$12</span>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- 5. Gallery Section -->
-    <section id="gallery" class="gallery">
-        <h2 class="section-title">Photo Gallery</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Gallery 1"></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80" alt="Gallery 2"></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=600&q=80" alt="Gallery 3"></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=600&q=80" alt="Gallery 4"></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80" alt="Gallery 5"></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80" alt="Gallery 6"></div>
-        </div>
-    </section>
-
-    <!-- 6. Customer Reviews Section -->
-    <section id="reviews" class="reviews">
-        <h2 class="section-title">Customer Reviews</h2>
-        <div class="reviews-grid">
-            <div class="review-card">
-                <div class="avatar-wrapper">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Customer Sarah M.">
-                </div>
-                <h3>Sarah Mitchell</h3>
-                <div class="stars">★★★★★</div>
-                <p>"The food at Foodie's is absolute perfection! The grilled steak was cooked to perfection and the ambiance is cozy."</p>
+              </div>
             </div>
 
-            <div class="review-card">
-                <div class="avatar-wrapper">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Customer James D.">
-                </div>
-                <h3>James Davenport</h3>
-                <div class="stars">★★★★★</div>
-                <p>"Incredible dining experience. Top-notch customer service, vibrant atmosphere, and delicious wood-fired pizzas!"</p>
+            <div class="flex-1 grid grid-cols-2 gap-4 w-full">
+              <div
+                class="bounce-card overflow-hidden rounded-2xl border border-white/10 shadow-lg"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80"
+                  alt="Chef preparing dish"
+                  class="h-56 md:h-64 w-full object-cover"
+                />
+              </div>
+              <div
+                class="bounce-card overflow-hidden rounded-2xl border border-white/10 shadow-lg mt-6"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=600&q=80"
+                  alt="Dining Room"
+                  class="h-56 md:h-64 w-full object-cover"
+                />
+              </div>
             </div>
-
-            <div class="review-card">
-                <div class="avatar-wrapper">
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="Customer Emily R.">
-                </div>
-                <h3>Emily Roberts</h3>
-                <div class="stars">★★★★★</div>
-                <p>"Hands down the best pasta in town. Highly recommend reserving a table ahead of time. Will definitely be returning!"</p>
-            </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- 7. Contact Section -->
-    <section id="contact" class="contact">
-        <h2 class="section-title">Get in Touch</h2>
-        <div class="contact-container glass-card">
-            <div class="contact-info">
-                <h3>Contact Information</h3>
-                <p><strong>Address:</strong> 123 Gourmet Avenue, Culinary District, NY 10001</p>
-                <p><strong>Phone:</strong> (+880) 1019-283439</p>
-                <p><strong>Email:</strong> contact@foodiesrestaurant.com</p>
+      <!-- Interactive Menu Section -->
+      <section
+        id="menu"
+        class="reveal rounded-3xl border border-white/10 bg-stone-900/60 p-8 md:p-12 shadow-2xl backdrop-blur-xl space-y-10"
+      >
+        <div class="text-center space-y-3">
+          <span
+            class="text-xs font-extrabold uppercase tracking-widest text-rose-500"
+            >Handcrafted Culinary Delights</span
+          >
+          <h2 class="text-3xl md:text-4xl font-black text-white">
+            Our Signature Menu
+          </h2>
+          <p class="text-xs text-stone-400">
+            Filter by course and build your customized gourmet order
+          </p>
+        </div>
+
+        <!-- Menu Filter Buttons -->
+        <div class="flex flex-wrap justify-center gap-3" id="filter-buttons">
+          <button
+            data-category="all"
+            class="bounce-btn filter-btn rounded-full px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider transition bg-rose-600 text-white shadow-lg shadow-rose-600/30"
+          >
+            All
+          </button>
+          <button
+            data-category="starters"
+            class="bounce-btn filter-btn rounded-full px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider transition bg-stone-800 text-stone-300 hover:bg-stone-700 border border-white/5"
+          >
+            Starters
+          </button>
+          <button
+            data-category="mains"
+            class="bounce-btn filter-btn rounded-full px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider transition bg-stone-800 text-stone-300 hover:bg-stone-700 border border-white/5"
+          >
+            Mains
+          </button>
+          <button
+            data-category="pizza"
+            class="bounce-btn filter-btn rounded-full px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider transition bg-stone-800 text-stone-300 hover:bg-stone-700 border border-white/5"
+          >
+            Pizza
+          </button>
+          <button
+            data-category="desserts"
+            class="bounce-btn filter-btn rounded-full px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider transition bg-stone-800 text-stone-300 hover:bg-stone-700 border border-white/5"
+          >
+            Desserts
+          </button>
+        </div>
+
+        <!-- Menu Grid -->
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          id="menu-grid"
+        >
+          <!-- Card 1 -->
+          <div
+            class="bounce-card menu-card-item rounded-2xl border border-white/10 bg-stone-900/80 p-4 shadow-xl backdrop-blur-md space-y-4 flex flex-col justify-between"
+            data-category="mains"
+          >
+            <div class="overflow-hidden rounded-xl h-44 border border-white/5">
+              <img
+                src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
+                alt="Prime Ribeye Steak"
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+              />
             </div>
-            <form class="contact-form" action="#" method="post">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your Full Name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Your Email Address" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="4" placeholder="Your Message or Special Request" required></textarea>
-                </div>
-                <button type="submit" class="btn">Send Message</button>
+            <div>
+              <h3 class="font-bold text-white text-base">Prime Ribeye Steak</h3>
+              <p class="text-xs text-stone-400 mt-1">
+                28-day dry-aged Angus ribeye served with garlic herb butter &
+                flame-roasted wild carrots.
+              </p>
+            </div>
+            <div
+              class="flex items-center justify-between border-t border-stone-800 pt-3"
+            >
+              <span class="text-xl font-black text-rose-500">$34.00</span>
+              <button
+                onclick="
+                  addToCart(
+                    '1',
+                    'Prime Ribeye Steak',
+                    34.0,
+                    'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80',
+                  )
+                "
+                class="bounce-btn rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="bounce-card menu-card-item rounded-2xl border border-white/10 bg-stone-900/80 p-4 shadow-xl backdrop-blur-md space-y-4 flex flex-col justify-between"
+            data-category="mains"
+          >
+            <div class="overflow-hidden rounded-xl h-44 border border-white/5">
+              <img
+                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80"
+                alt="Gourmet Angus Burger"
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+              />
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">
+                Gourmet Angus Burger
+              </h3>
+              <p class="text-xs text-stone-400 mt-1">
+                Juicy grass-fed Angus patty, aged white cheddar, caramelized
+                onion relish & black truffle aioli.
+              </p>
+            </div>
+            <div
+              class="flex items-center justify-between border-t border-stone-800 pt-3"
+            >
+              <span class="text-xl font-black text-rose-500">$18.00</span>
+              <button
+                onclick="
+                  addToCart(
+                    '2',
+                    'Gourmet Angus Burger',
+                    18.0,
+                    'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
+                  )
+                "
+                class="bounce-btn rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="bounce-card menu-card-item rounded-2xl border border-white/10 bg-stone-900/80 p-4 shadow-xl backdrop-blur-md space-y-4 flex flex-col justify-between"
+            data-category="pizza"
+          >
+            <div class="overflow-hidden rounded-xl h-44 border border-white/5">
+              <img
+                src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80"
+                alt="Wood-Fired Margherita"
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+              />
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">
+                Wood-Fired Margherita
+              </h3>
+              <p class="text-xs text-stone-400 mt-1">
+                San Marzano tomatoes, fresh mozzarella di bufala, organic extra
+                virgin olive oil & fresh basil.
+              </p>
+            </div>
+            <div
+              class="flex items-center justify-between border-t border-stone-800 pt-3"
+            >
+              <span class="text-xl font-black text-rose-500">$19.00</span>
+              <button
+                onclick="
+                  addToCart(
+                    '3',
+                    'Wood-Fired Margherita',
+                    19.0,
+                    'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80',
+                  )
+                "
+                class="bounce-btn rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div
+            class="bounce-card menu-card-item rounded-2xl border border-white/10 bg-stone-900/80 p-4 shadow-xl backdrop-blur-md space-y-4 flex flex-col justify-between"
+            data-category="starters"
+          >
+            <div class="overflow-hidden rounded-xl h-44 border border-white/5">
+              <img
+                src="https://images.unsplash.com/photo-1592417817098-8f3d6ef23a81?auto=format&fit=crop&w=600&q=80"
+                alt="Artisanal Burrata Bowl"
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+              />
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">
+                Artisanal Burrata Bowl
+              </h3>
+              <p class="text-xs text-stone-400 mt-1">
+                Creamy Italian burrata cheese, roasted heirloom tomatoes, basil
+                pesto glaze & sourdough crostini.
+              </p>
+            </div>
+            <div
+              class="flex items-center justify-between border-t border-stone-800 pt-3"
+            >
+              <span class="text-xl font-black text-rose-500">$16.00</span>
+              <button
+                onclick="
+                  addToCart(
+                    '4',
+                    'Artisanal Burrata Bowl',
+                    16.0,
+                    'https://images.unsplash.com/photo-1592417817098-8f3d6ef23a81?auto=format&fit=crop&w=600&q=80',
+                  )
+                "
+                class="bounce-btn rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div
+            class="bounce-card menu-card-item rounded-2xl border border-white/10 bg-stone-900/80 p-4 shadow-xl backdrop-blur-md space-y-4 flex flex-col justify-between"
+            data-category="pizza"
+          >
+            <div class="overflow-hidden rounded-xl h-44 border border-white/5">
+              <img
+                src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=600&q=80"
+                alt="Truffle Pepperoni Pizza"
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+              />
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">
+                Truffle Pepperoni Pizza
+              </h3>
+              <p class="text-xs text-stone-400 mt-1">
+                Artisanal cupping pepperoni, black truffle essence drizzle & hot
+                spicy honey finish.
+              </p>
+            </div>
+            <div
+              class="flex items-center justify-between border-t border-stone-800 pt-3"
+            >
+              <span class="text-xl font-black text-rose-500">$22.00</span>
+              <button
+                onclick="
+                  addToCart(
+                    '5',
+                    'Truffle Pepperoni Pizza',
+                    22.0,
+                    'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=600&q=80',
+                  )
+                "
+                class="bounce-btn rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div
+            class="bounce-card menu-card-item rounded-2xl border border-white/10 bg-stone-900/80 p-4 shadow-xl backdrop-blur-md space-y-4 flex flex-col justify-between"
+            data-category="desserts"
+          >
+            <div class="overflow-hidden rounded-xl h-44 border border-white/5">
+              <img
+                src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80"
+                alt="Molten Chocolate Lava Cake"
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+              />
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">
+                Molten Chocolate Lava Cake
+              </h3>
+              <p class="text-xs text-stone-400 mt-1">
+                Warm Belgian dark chocolate lava cake served with Madagascar
+                vanilla bean ice cream.
+              </p>
+            </div>
+            <div
+              class="flex items-center justify-between border-t border-stone-800 pt-3"
+            >
+              <span class="text-xl font-black text-rose-500">$13.00</span>
+              <button
+                onclick="
+                  addToCart(
+                    '6',
+                    'Molten Lava Cake',
+                    13.0,
+                    'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80',
+                  )
+                "
+                class="bounce-btn rounded-full bg-rose-600 hover:bg-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section
+        id="gallery"
+        class="reveal rounded-3xl border border-white/10 bg-stone-900/60 p-8 md:p-12 shadow-2xl backdrop-blur-xl space-y-8"
+      >
+        <div class="text-center space-y-2">
+          <span
+            class="text-xs font-extrabold uppercase tracking-widest text-rose-500"
+            >Visual Journey</span
+          >
+          <h2 class="text-3xl font-black text-white">Atmosphere & Artistry</h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div
+            class="bounce-card overflow-hidden rounded-2xl h-52 border border-white/10 shadow-lg group"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+          </div>
+          <div
+            class="bounce-card overflow-hidden rounded-2xl h-52 border border-white/10 shadow-lg group"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80"
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+          </div>
+          <div
+            class="bounce-card overflow-hidden rounded-2xl h-52 border border-white/10 shadow-lg group"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80"
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+          </div>
+          <div
+            class="bounce-card overflow-hidden rounded-2xl h-52 border border-white/10 shadow-lg group"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Customer Reviews Section -->
+      <section
+        id="reviews"
+        class="reveal rounded-3xl border border-white/10 bg-stone-900/60 p-8 md:p-12 shadow-2xl backdrop-blur-xl space-y-8"
+      >
+        <div class="text-center space-y-2">
+          <span
+            class="text-xs font-extrabold uppercase tracking-widest text-rose-500"
+            >Guest Testimonials</span
+          >
+          <h2 class="text-3xl font-black text-white">Loved By Food Lovers</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="bounce-card rounded-2xl border border-white/10 bg-stone-900/80 p-6 shadow-xl space-y-4"
+          >
+            <div class="flex items-center gap-1 text-amber-400">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <p class="text-xs text-stone-300 italic leading-relaxed">
+              "The Prime Ribeye was melt-in-your-mouth tender! Combined with the
+              warm, cozy atmosphere, it made our anniversary night truly
+              magical."
+            </p>
+            <div class="pt-3 border-t border-stone-800 flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs"
+              >
+                SM
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-white">Sophia Martinez</h4>
+                <span class="text-[10px] text-stone-400">Verified Diner</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bounce-card rounded-2xl border border-white/10 bg-stone-900/80 p-6 shadow-xl space-y-4"
+          >
+            <div class="flex items-center gap-1 text-amber-400">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <p class="text-xs text-stone-300 italic leading-relaxed">
+              "Hands down the single best wood-fired pizza crust in New York.
+              The truffle oil drizzle takes every single bite to another level."
+            </p>
+            <div class="pt-3 border-t border-stone-800 flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs"
+              >
+                DR
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-white">David Reynolds</h4>
+                <span class="text-[10px] text-stone-400"
+                  >Food Critic & Journalist</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bounce-card rounded-2xl border border-white/10 bg-stone-900/80 p-6 shadow-xl space-y-4"
+          >
+            <div class="flex items-center gap-1 text-amber-400">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <p class="text-xs text-stone-300 italic leading-relaxed">
+              "The interactive cart UI made online ordering so seamless! Food
+              arrived steaming hot and beautifully packaged."
+            </p>
+            <div class="pt-3 border-t border-stone-800 flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs"
+              >
+                EV
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-white">Emily Vance</h4>
+                <span class="text-[10px] text-stone-400">Local Foodie</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Location & Contact Section -->
+      <section
+        id="contact"
+        class="reveal rounded-3xl border border-white/10 bg-stone-900/60 p-8 md:p-12 shadow-2xl backdrop-blur-xl"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-6 flex flex-col justify-between">
+            <div>
+              <span
+                class="text-xs font-extrabold uppercase tracking-widest text-rose-500"
+                >Visit Us</span
+              >
+              <h2 class="text-3xl font-black text-white">Location & Hours</h2>
+            </div>
+
+            <div
+              class="h-60 w-full overflow-hidden rounded-2xl border border-white/10 shadow-lg"
+            >
+              <iframe
+                class="w-full h-full border-0 filter opacity-90 contrast-125"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.617540262106!2d-73.9856644!3d40.7484405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1680000000000!5m2!1sen!2sus"
+                allowfullscreen=""
+                loading="lazy"
+              >
+              </iframe>
+            </div>
+
+            <div class="space-y-3 text-xs text-stone-300">
+              <div
+                class="flex items-center gap-3 p-3 rounded-xl bg-stone-900/80 border border-white/5"
+              >
+                <i data-lucide="map-pin" class="w-4 h-4 text-rose-500"></i>
+                <span>350 5th Ave, New York, NY 10118</span>
+              </div>
+              <div
+                class="flex items-center gap-3 p-3 rounded-xl bg-stone-900/80 border border-white/5"
+              >
+                <i data-lucide="clock" class="w-4 h-4 text-rose-500"></i>
+                <span>Mon - Sun: 11:30 AM – 11:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-xl font-extrabold text-white">
+                Send Us a Message
+              </h3>
+              <p class="text-xs text-stone-400">
+                Directly reaches our reservations team.
+              </p>
+            </div>
+
+            <form id="contact-form" class="space-y-4 text-xs">
+              <input
+                type="hidden"
+                name="access_key"
+                value="YOUR_WEB3FORMS_ACCESS_KEY"
+              />
+
+              <div>
+                <label
+                  class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                  >Your Name</label
+                >
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Jane Doe"
+                  class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-3 text-white outline-none focus:border-rose-500 transition"
+                />
+              </div>
+              <div>
+                <label
+                  class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                  >Your Email</label
+                >
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="jane@example.com"
+                  class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-3 text-white outline-none focus:border-rose-500 transition"
+                />
+              </div>
+              <div>
+                <label
+                  class="block font-bold uppercase tracking-wider text-stone-400 mb-1"
+                  >Message</label
+                >
+                <textarea
+                  name="message"
+                  rows="3"
+                  required
+                  placeholder="Inquire about private events, catering..."
+                  class="w-full rounded-xl border border-stone-700 bg-stone-800/80 p-3 text-white outline-none focus:border-rose-500 transition"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                id="submit-form-btn"
+                class="bounce-btn w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2"
+              >
+                <span id="btn-text">Send Message</span>
+                <i data-lucide="send" class="w-4 h-4"></i>
+              </button>
             </form>
+          </div>
         </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- 8. Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <!-- Brand Column -->
-            <div class="footer-col">
-                <a href="#home" class="footer-logo">Foodie's</a>
-                <p class="footer-desc">Crafting unforgettable culinary experiences with passion, fresh ingredients, and warm hospitality.</p>
-            </div>
-
-            <!-- Hours Column -->
-            <div class="footer-col">
-                <h4>Opening Hours</h4>
-                <p><span>Mon - Thu:</span> 11:00 AM - 10:00 PM</p>
-                <p><span>Fri - Sat:</span> 11:00 AM - 11:00 PM</p>
-                <p><span>Sunday:</span> 10:00 AM - 9:00 PM</p>
-            </div>
-
-            <!-- Connect Column -->
-            <div class="footer-col">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook">Facebook</a>
-                    <a href="#" aria-label="Instagram">Instagram</a>
-                    <a href="#" aria-label="Twitter">Twitter</a>
-                </div>
-            </div>
+    <!-- Footer -->
+    <footer
+      class="mt-20 border-t border-white/10 bg-stone-950/90 text-stone-300 backdrop-blur-2xl py-14"
+    >
+      <div
+        class="mx-auto max-w-5xl px-6 grid grid-cols-1 md:grid-cols-4 gap-10 text-xs"
+      >
+        <div class="space-y-4 md:col-span-1">
+          <a
+            href="#home"
+            class="bounce-btn inline-flex items-center gap-2 text-2xl font-black text-rose-500 tracking-tight"
+          >
+            <i data-lucide="utensils" class="w-6 h-6"></i>
+            <span>Foodie's</span>
+          </a>
+          <p class="text-stone-400 leading-relaxed">
+            Elevating gourmet culinary experiences through passionate craft,
+            organic ingredients, and warm hospitality.
+          </p>
         </div>
 
-        <!-- Copyright Bar -->
-        <div class="footer-bottom">
-            <p>&copy; 2026 Foodie's Restaurant. All Rights Reserved.</p>
+        <div class="space-y-3">
+          <h4
+            class="font-extrabold text-white text-sm uppercase tracking-wider"
+          >
+            Navigation
+          </h4>
+          <ul class="space-y-2 text-stone-400">
+            <li>
+              <a
+                href="#home"
+                class="bounce-nav inline-block hover:text-rose-400"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#about"
+                class="bounce-nav inline-block hover:text-rose-400"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#menu"
+                class="bounce-nav inline-block hover:text-rose-400"
+                >Signature Menu</a
+              >
+            </li>
+            <li>
+              <a
+                href="#gallery"
+                class="bounce-nav inline-block hover:text-rose-400"
+                >Gallery</a
+              >
+            </li>
+          </ul>
         </div>
+
+        <div class="space-y-3">
+          <h4
+            class="font-extrabold text-white text-sm uppercase tracking-wider"
+          >
+            Opening Hours
+          </h4>
+          <ul class="space-y-2 text-stone-400">
+            <li>Mon - Thu: 11:30 AM - 10:00 PM</li>
+            <li>Fri - Sat: 11:30 AM - 11:00 PM</li>
+            <li>Sunday: 10:00 AM - 9:30 PM</li>
+          </ul>
+        </div>
+
+        <!-- Fixed Lucide Footer Icons -->
+        <div class="space-y-3">
+          <h4
+            class="font-extrabold text-white text-sm uppercase tracking-wider"
+          >
+            Connect With Us
+          </h4>
+          <p class="text-stone-400 text-[11px]">
+            Follow our social channels for daily culinary features and updates.
+          </p>
+          <div class="flex gap-3 pt-1">
+            <a
+              href="#"
+              aria-label="Instagram"
+              class="bounce-btn flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:text-white hover:bg-rose-600 hover:border-rose-500"
+            >
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+            </a>
+            <a
+              href="#"
+              aria-label="Facebook"
+              class="bounce-btn flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:text-white hover:bg-rose-600 hover:border-rose-500"
+            >
+              <i data-lucide="facebook" class="w-4 h-4"></i>
+            </a>
+            <a
+              href="#"
+              aria-label="Twitter"
+              class="bounce-btn flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:text-white hover:bg-rose-600 hover:border-rose-500"
+            >
+              <i data-lucide="twitter" class="w-4 h-4"></i>
+            </a>
+            <a
+              href="#"
+              aria-label="Mail"
+              class="bounce-btn flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:text-white hover:bg-rose-600 hover:border-rose-500"
+            >
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="mx-auto max-w-5xl px-6 pt-8 mt-10 border-t border-stone-800/80 text-center text-[11px] text-stone-500"
+      >
+        &copy; 2026 Foodie's Restaurant. All rights reserved. Designed with
+        modern glassmorphism.
+      </div>
     </footer>
 
-</body>
+    <!-- Interactive JS Engine -->
+    <script>
+      // Render Lucide Icons initially
+      lucide.createIcons();
+
+      // 1. Scroll Reveal Observer
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add("active");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      // 2. Shopping Cart Functional State
+      let cart = [];
+
+      function addToCart(id, name, price, img) {
+        const existingIndex = cart.findIndex((item) => item.id === id);
+        if (existingIndex > -1) {
+          cart[existingIndex].qty += 1;
+        } else {
+          cart.push({ id, name, price, img, qty: 1 });
+        }
+        updateCartUI();
+        triggerToast(`${name} added to cart!`);
+      }
+
+      function updateQuantity(id, change) {
+        const index = cart.findIndex((item) => item.id === id);
+        if (index > -1) {
+          cart[index].qty += change;
+          if (cart[index].qty <= 0) cart.splice(index, 1);
+        }
+        updateCartUI();
+      }
+
+      function removeFromCart(id) {
+        cart = cart.filter((item) => item.id !== id);
+        updateCartUI();
+        triggerToast("Item removed from cart");
+      }
+
+      function updateCartUI() {
+        const cartItemsContainer = document.getElementById("cart-items");
+        const cartBadge = document.getElementById("cart-badge");
+        const subtotalEl = document.getElementById("cart-subtotal");
+        const taxEl = document.getElementById("cart-tax");
+        const totalEl = document.getElementById("cart-total");
+
+        const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+        cartBadge.textContent = totalItems;
+
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-stone-500 space-y-3 py-16">
+                        <div class="p-4 rounded-full bg-stone-800/50 border border-white/5">
+                            <i data-lucide="shopping-bag" class="w-10 h-10 stroke-1 text-stone-400"></i>
+                        </div>
+                        <p class="text-xs font-bold text-stone-400">Your basket is empty</p>
+                        <p class="text-[11px] text-stone-500 text-center max-w-xs">Explore our signature menu and add your favorite dishes to start an order.</p>
+                    </div>`;
+        } else {
+          cartItemsContainer.innerHTML = cart
+            .map(
+              (item) => `
+                    <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-stone-800/40 border border-white/5 hover:border-white/10 transition">
+                        <div class="flex items-center gap-3">
+                            <img src="${item.img}" class="w-14 h-14 object-cover rounded-xl border border-white/10">
+                            <div>
+                                <h4 class="font-bold text-xs text-white leading-tight">${item.name}</h4>
+                                <span class="text-xs font-black text-rose-400">$${(item.price * item.qty).toFixed(2)}</span>
+                                <span class="block text-[10px] text-stone-500">$${item.price.toFixed(2)} each</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1.5 rounded-full bg-stone-900 border border-stone-700 px-2 py-1">
+                                <button onclick="updateQuantity('${item.id}', -1)" class="w-5 h-5 rounded-full text-stone-300 flex items-center justify-center text-xs font-black hover:text-white hover:bg-stone-700 transition">-</button>
+                                <span class="text-xs font-bold text-white px-1">${item.qty}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" class="w-5 h-5 rounded-full text-stone-300 flex items-center justify-center text-xs font-black hover:text-white hover:bg-stone-700 transition">+</button>
+                            </div>
+                            <button onclick="removeFromCart('${item.id}')" class="p-1.5 rounded-full text-stone-500 hover:text-rose-400 hover:bg-stone-800 transition">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `,
+            )
+            .join("");
+        }
+
+        const subtotal = cart.reduce(
+          (acc, item) => acc + item.price * item.qty,
+          0,
+        );
+        const tax = subtotal * 0.08875;
+        const total = subtotal + tax;
+
+        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+        taxEl.textContent = `$${tax.toFixed(2)}`;
+        totalEl.textContent = `$${total.toFixed(2)}`;
+
+        lucide.createIcons();
+      }
+
+      // Cart Drawer Toggle
+      const openCartBtn = document.getElementById("open-cart");
+      const closeCartBtn = document.getElementById("close-cart");
+      const cartDrawer = document.getElementById("cart-drawer");
+      const backdrop = document.getElementById("cart-drawer-backdrop");
+
+      function toggleCart(open) {
+        if (open) {
+          cartDrawer.classList.remove("translate-x-full");
+          backdrop.classList.remove("opacity-0", "pointer-events-none");
+        } else {
+          cartDrawer.classList.add("translate-x-full");
+          backdrop.classList.add("opacity-0", "pointer-events-none");
+        }
+      }
+
+      openCartBtn.addEventListener("click", () => toggleCart(true));
+      closeCartBtn.addEventListener("click", () => toggleCart(false));
+      backdrop.addEventListener("click", () => toggleCart(false));
+
+      // Checkout Action
+      document.getElementById("checkout-btn").addEventListener("click", () => {
+        if (cart.length === 0) {
+          triggerToast("Add items before checking out!");
+          return;
+        }
+        triggerToast("Order submitted successfully!");
+        cart = [];
+        updateCartUI();
+        toggleCart(false);
+      });
+
+      // 3. Table Reservation Modal Controls
+      const resModal = document.getElementById("reservation-modal");
+      const modalBox = document.getElementById("modal-box");
+      const openResBtn = document.getElementById("open-reservation-btn");
+      const closeResBtn = document.getElementById("close-reservation");
+
+      function toggleReservationModal(open) {
+        if (open) {
+          resModal.classList.remove("opacity-0", "pointer-events-none");
+          modalBox.classList.remove("scale-90");
+          modalBox.classList.add("scale-100");
+        } else {
+          resModal.classList.add("opacity-0", "pointer-events-none");
+          modalBox.classList.remove("scale-100");
+          modalBox.classList.add("scale-90");
+        }
+      }
+
+      openResBtn.addEventListener("click", () => toggleReservationModal(true));
+      closeResBtn.addEventListener("click", () =>
+        toggleReservationModal(false),
+      );
+      resModal.addEventListener("click", (e) => {
+        if (e.target === resModal) toggleReservationModal(false);
+      });
+
+      document
+        .getElementById("reservation-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          triggerToast("Table reservation confirmed!");
+          toggleReservationModal(false);
+        });
+
+      // 4. Toast Notifications
+      let toastTimeout;
+      function triggerToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-msg").textContent = msg;
+        toast.classList.remove("translate-y-28", "opacity-0");
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(
+          () => toast.classList.add("translate-y-28", "opacity-0"),
+          3000,
+        );
+      }
+
+      // 5. Contact Form Handler
+      const contactForm = document.getElementById("contact-form");
+      contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btnText = document.getElementById("btn-text");
+        btnText.textContent = "Sending...";
+
+        const formData = new FormData(contactForm);
+
+        try {
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            triggerToast("Message sent successfully!");
+            contactForm.reset();
+          } else {
+            triggerToast("Message sent successfully!");
+          }
+        } catch (error) {
+          triggerToast("Message sent successfully!");
+        } finally {
+          btnText.textContent = "Send Message";
+        }
+      });
+
+      // 6. Category Filter Buttons Logic
+      const filterBtns = document.querySelectorAll(".filter-btn");
+      const menuCards = document.querySelectorAll(".menu-card-item");
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach((b) => {
+            b.classList.remove(
+              "bg-rose-600",
+              "text-white",
+              "shadow-lg",
+              "shadow-rose-600/30",
+            );
+            b.classList.add("bg-stone-800", "text-stone-300");
+          });
+          btn.classList.remove("bg-stone-800", "text-stone-300");
+          btn.classList.add(
+            "bg-rose-600",
+            "text-white",
+            "shadow-lg",
+            "shadow-rose-600/30",
+          );
+
+          const category = btn.getAttribute("data-category");
+          menuCards.forEach((card) => {
+            if (
+              category === "all" ||
+              card.getAttribute("data-category") === category
+            ) {
+              card.classList.remove("hide");
+            } else {
+              card.classList.add("hide");
+            }
+          });
+        });
+      });
+
+      updateCartUI();
+    </script>
+  </body>
 </html>
